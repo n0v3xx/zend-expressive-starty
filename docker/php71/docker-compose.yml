@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+    start_database:
+        image: mysql:5.6
+        container_name: start_database
+        environment:
+            MYSQL_ROOT_PASSWORD: dev
+            MYSQL_DATABASE: database_base
+            MYSQL_USER: dev
+            MYSQL_PASSWORD: dev
+        ports:
+            - "13308:3306"
+        networks:
+            - project-network
+
+    start_redis:
+         image: redis:3.2.6
+         container_name: start_redis
+         hostname: redis
+         networks:
+             - project-network
+
+    start_php71:
+        container_name: start_php71
+        hostname: exp-web-container
+        networks:
+            - project-network
+        build:
+            context: ./../../
+            dockerfile: ./docker/php71/Dockerfile
+            args:
+                userId: ${USER_ID}
+                groupId: ${GROUP_ID}
+        depends_on:
+            - start_database
+            - start_redis
+        volumes:
+            - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+            - ./../../:/var/www/application
+        environment:
+            - SSH_AUTH_SOCK
+            - PHP_IDE_CONFIG
+        working_dir: /var/www/application
+
+    start_nginx:
+        image: nginx:latest
+        container_name: start_nginx
+        hostname: start_nginx
+        networks:
+            - project-network
+        depends_on:
+            - start_php71
+        ports:
+            - "8775:80"
+            - "8776:443"
+        volumes:
+            - ./../../:/var/www/application
+            - ./../../docker/template/nginx/vhost/site.conf:/etc/nginx/conf.d/default.conf
+        working_dir: /var/www/application
+
+networks:
+    project-network:
+        driver: bridge

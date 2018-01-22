@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Creates the config object for php-cs-fixer.
+ *
+ * https://github.com/FriendsOfPHP/PHP-CS-Fixer
+ */
+return PhpCsFixer\Config::create()
+    ->setUsingCache(true)
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        '@PHP70Migration' => true,
+        '@PHP71Migration' => true,
+
+        // disabled
+        'binary_operator_spaces' => false,
+        'is_null' => false, // ['use_yoda_style' => false],
+        'no_multiline_whitespace_around_double_arrow' => false,
+        'phpdoc_summary' => false,
+        'psr4' => false,
+        'trailing_comma_in_multiline_array' => false,
+        'yoda_style' => false,
+
+        // enabled
+        'array_syntax' => ['syntax' => 'short'],
+        'concat_space' => ['spacing' => 'one'],
+        'doctrine_annotation_braces' => true,
+        'doctrine_annotation_indentation' => true,
+        'ordered_imports' => true,
+        'phpdoc_order' => true,
+        'php_unit_construct' => true,
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->files()
+            ->in(__DIR__ . '/bin')
+            ->in(__DIR__ . '/src')
+            ->exclude([])
+            ->notName('*.dist.php')
+            ->notName('*.xml')
+    );
