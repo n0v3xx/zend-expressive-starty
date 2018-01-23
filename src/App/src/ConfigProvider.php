@@ -38,6 +38,7 @@ class ConfigProvider
             ],
             'factories'  => [
                 Action\HomePageAction::class => Action\HomePageFactory::class,
+                Action\Manage\AddAction::class => Action\Manage\AddActionFactory::class,
             ],
         ];
     }
@@ -52,6 +53,7 @@ class ConfigProvider
         return [
             'paths' => [
                 'app'    => [__DIR__ . '/../templates/app'],
+                'manage' => [__DIR__ . '/../templates/manage'],
                 'error'  => [__DIR__ . '/../templates/error'],
                 'layout' => [__DIR__ . '/../templates/layout'],
             ],

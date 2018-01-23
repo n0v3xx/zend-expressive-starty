@@ -2,8 +2,8 @@
 
 namespace AppTest\Action;
 
-use App\Action\HomePageAction;
-use App\Action\HomePageFactory;
+use App\Action\AddAction;
+use App\Action\AddActionFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Router\RouterInterface;
@@ -24,28 +24,28 @@ class HomePageFactoryTest extends TestCase
 
     public function testFactoryWithoutTemplate()
     {
-        $factory = new HomePageFactory();
+        $factory = new AddActionFactory();
         $this->container->has(TemplateRendererInterface::class)->willReturn(false);
 
-        $this->assertInstanceOf(HomePageFactory::class, $factory);
+        $this->assertInstanceOf(AddActionFactory::class, $factory);
 
         $homePage = $factory($this->container->reveal());
 
-        $this->assertInstanceOf(HomePageAction::class, $homePage);
+        $this->assertInstanceOf(AddAction::class, $homePage);
     }
 
     public function testFactoryWithTemplate()
     {
-        $factory = new HomePageFactory();
+        $factory = new AddActionFactory();
         $this->container->has(TemplateRendererInterface::class)->willReturn(true);
         $this->container
             ->get(TemplateRendererInterface::class)
             ->willReturn($this->prophesize(TemplateRendererInterface::class));
 
-        $this->assertInstanceOf(HomePageFactory::class, $factory);
+        $this->assertInstanceOf(AddActionFactory::class, $factory);
 
         $homePage = $factory($this->container->reveal());
 
-        $this->assertInstanceOf(HomePageAction::class, $homePage);
+        $this->assertInstanceOf(AddAction::class, $homePage);
     }
 }

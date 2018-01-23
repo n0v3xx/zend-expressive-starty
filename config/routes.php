@@ -29,4 +29,5 @@
 /** @var \Zend\Expressive\Application $app */
 
 $app->get('/', App\Action\HomePageAction::class, 'home');
+$app->get('/manage/add', App\Action\Manage\AddAction::class, 'manage.add');
 $app->get('/api/ping', App\Action\PingAction::class, 'api.ping');

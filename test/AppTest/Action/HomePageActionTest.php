@@ -2,7 +2,7 @@
 
 namespace AppTest\Action;
 
-use App\Action\HomePageAction;
+use App\Action\AddAction;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -24,7 +24,7 @@ class HomePageActionTest extends TestCase
 
     public function testReturnsJsonResponseWhenNoTemplateRendererProvided()
     {
-        $homePage = new HomePageAction($this->router->reveal(), null);
+        $homePage = new AddAction($this->router->reveal(), null);
         $response = $homePage->process(
             $this->prophesize(ServerRequestInterface::class)->reveal(),
             $this->prophesize(DelegateInterface::class)->reveal()
@@ -40,7 +40,7 @@ class HomePageActionTest extends TestCase
             ->render('app::home-page', Argument::type('array'))
             ->willReturn('');
 
-        $homePage = new HomePageAction($this->router->reveal(), $renderer->reveal());
+        $homePage = new AddAction($this->router->reveal(), $renderer->reveal());
 
         $response = $homePage->process(
             $this->prophesize(ServerRequestInterface::class)->reveal(),
