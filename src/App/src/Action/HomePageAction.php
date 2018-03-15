@@ -12,6 +12,7 @@ use Zend\Expressive\Router;
 use Zend\Expressive\Template;
 use Zend\Expressive\Twig\TwigRenderer;
 use Zend\Expressive\ZendView\ZendViewRenderer;
+use Monolog\Logger;
 
 class HomePageAction implements ServerMiddlewareInterface
 {
@@ -19,10 +20,16 @@ class HomePageAction implements ServerMiddlewareInterface
 
     private $template;
 
-    public function __construct(Router\RouterInterface $router, Template\TemplateRendererInterface $template = null)
-    {
+    protected $logger;
+
+    public function __construct(
+        Router\RouterInterface $router,
+        Template\TemplateRendererInterface $template = null,
+        Logger $logger
+    ) {
         $this->router   = $router;
         $this->template = $template;
+        $this->logger = $logger;
     }
 
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
@@ -57,6 +64,10 @@ class HomePageAction implements ServerMiddlewareInterface
             $data['templateName'] = 'Zend View';
             $data['templateDocs'] = 'https://docs.zendframework.com/zend-view/';
         }
+
+        $this->logger->info('Test Info');
+
+//        throw new \Exception(bla);
 
         return new HtmlResponse($this->template->render('app::home-page', $data));
     }

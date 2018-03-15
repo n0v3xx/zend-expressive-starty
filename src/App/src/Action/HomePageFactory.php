@@ -15,6 +15,8 @@ class HomePageFactory
             ? $container->get(TemplateRendererInterface::class)
             : null;
 
-        return new HomePageAction($router, $template);
+        $logger = $container->get('Application\Log');
+
+        return new HomePageAction($router, $template, $logger);
     }
 }

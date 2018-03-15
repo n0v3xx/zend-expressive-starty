@@ -1,0 +1,39 @@
+<?php
+namespace App\Logger;
+
+use Exception;
+use Psr\Log\LoggerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
+
+class LoggingErrorListener
+{
+    /**
+     * Log format for messages:
+     *
+     * STATUS [METHOD] path: message
+     */
+    const LOG_FORMAT = '%d [%s] %s: %s';
+
+    private $logger;
+
+    public function __construct(\Monolog\Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->logger->error(
+            $error->getMessage()
+        );
+//        $this->logger->error(sprintf(
+//            self::LOG_FORMAT,
+//            $response->getStatusCode(),
+//            $request->getMethod(),
+//            (string) $request->getUri(),
+//            $error->getMessage()
+//        ));
+    }
+}

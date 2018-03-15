@@ -35,5 +35,8 @@ return [
             Middleware\ErrorResponseGenerator::class         => Container\ErrorResponseGeneratorFactory::class,
             Middleware\NotFoundHandler::class                => Container\NotFoundHandlerFactory::class,
         ],
+        'delegators' => [
+            Zend\Stratigility\Middleware\ErrorHandler::class => [\App\Logger\LoggingErrorListenerDelegatorFactory::class],
+        ]
     ],
 ];
